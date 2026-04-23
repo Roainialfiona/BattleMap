@@ -1,0 +1,288 @@
+/* ================= ACTION BAR ================= */
+.action-bar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:15px 0;
+    align-items:center;
+}
+
+.action-bar input{
+    padding:8px 10px;
+    border-radius:8px;
+    border:1px solid #ddd;
+}
+
+.action-bar button{
+    padding:9px 14px;
+    border:none;
+    border-radius:10px;
+    background:#e30613;
+    color:white;
+    cursor:pointer;
+    font-size:13px;
+    transition:0.2s;
+}
+
+.action-bar button:hover{
+    background:#c20510;
+}
+
+/* ================= LAYOUT ================= */
+.map-layout{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:20px;
+}
+
+/* ================= SIDEBAR ================= */
+.map-panel{
+    background:white;
+    padding:16px;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+
+    display:flex;
+    flex-direction:column;
+
+    height:70vh;
+    overflow-y:auto;
+}
+
+.map-panel > *{
+    margin-bottom:10px;
+}
+
+.map-panel > *:last-child{
+    margin-bottom:0;
+}
+
+/* ================= STAT ================= */
+.stat-box{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:10px 12px;
+    background:#f8f9fb;
+    border-radius:10px;
+    font-size:13px;
+}
+
+/* ================= FILTER ================= */
+.map-panel select{
+    padding:8px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    font-size:13px;
+}
+
+/* ================= FOLLOW UP ================= */
+.map-panel label{
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:#444;
+}
+
+/* ================= MAP ================= */
+.map-container{
+    background:white;
+    padding:10px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+#map{
+    height:68vh;
+    border-radius:14px;
+}
+
+/* ================= ROUTE BUILDER ================= */
+.route-box{
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px solid #eee;
+
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+/* judul */
+.route-box h4{
+    margin:0;
+    font-size:13px;
+    font-weight:600;
+    color:#444;
+}
+
+/* list route */
+#routeList{
+    margin-top:4px;
+    margin-bottom:6px;
+    max-height:100px;
+    overflow-y:auto;
+}
+
+/* item route */
+#routeList li{
+    font-size:12px;
+    padding:5px 6px;
+    border-radius:6px;
+    background:#f1f3f5;
+    margin-bottom:4px;
+}
+
+/* tombol */
+.route-box button{
+    padding:7px;
+    border-radius:8px;
+    border:none;
+    background:#e30613;
+    color:white;
+    font-size:12px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.route-box button:hover{
+    background:#c00510;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:900px){
+    .map-layout{
+        grid-template-columns:1fr;
+    }
+}
+
+/* ================= MARKER ================= */
+.custom-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: white;
+    border: 3px solid;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.custom-marker i {
+    font-size: 16px;
+}
+
+/* efek khusus follow up */
+.custom-marker.follow-up {
+    box-shadow: 0 0 15px red;
+}
+
+/* ================= BADGE ================= */
+.badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    display: inline-block;
+}
+
+/* WIN */
+.badge-win {
+    background: green;
+    color: white;
+}
+
+/* LOSE */
+.badge-lose {
+    background: red;
+    color: white;
+}
+
+/* UNKNOWN */
+.badge-unknown {
+    background: #ffd61e;
+    color: black;
+}
+
+/* NOT VISIT */
+.badge-notvisit {
+    background: #dee2e6;
+    color: black;
+}
+
+/* ================= POPUP ================= */
+
+.popup-box {
+    font-size: 13px;
+    min-width: 220px;
+}
+
+.popup-box hr {
+    margin: 6px 0;
+}
+
+/* ================= BUTTON ================= */
+
+.btn-nav {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 5px 10px;
+    background: #0d6efd;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.btn-edit {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 5px 10px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.btn-edit:hover {
+    background: #5a6268;
+}
+
+/* ================= POPUP FORM ================= */
+
+.popup-form {
+    min-width: 220px;
+}
+
+.popup-form label {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+}
+
+.popup-form select,
+.popup-form input {
+    width: 100%;
+    padding: 4px;
+    margin-top: 3px;
+    font-size: 12px;
+}
+
+.popup-form button {
+    margin-top: 10px;
+    padding: 6px;
+    width: 100%;
+    background: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.popup-form button:hover {
+    background: #0b5ed7;
+}

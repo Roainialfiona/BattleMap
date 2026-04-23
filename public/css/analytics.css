@@ -1,0 +1,244 @@
+/* ================= GRID ================= */
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+    gap:18px;
+    margin-bottom:25px;
+}
+
+/* ================= CARD ================= */
+.mini-card{
+    background:white;
+    padding:16px;
+    border-radius:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.04);
+    transition:0.2s;
+}
+
+.mini-card:hover{
+    transform:translateY(-2px);
+}
+
+/* ================= TEXT ================= */
+.mini-card p{
+    margin:0;
+    font-size:12px;
+    color:#8a8f98;
+}
+
+.mini-card h3{
+    margin-top:6px;
+    font-size:24px;
+    font-weight:700;
+    color:#1f2d3d;
+}
+
+/* ================= COLORS ================= */
+.mini-card.followup{ border-left:4px solid #f39c12; }
+.mini-card.win{ border-left:4px solid #2ecc71; }
+.mini-card.lose{ border-left:4px solid #e74c3c; }
+.mini-card.unknown{ border-left:4px solid #95a5a6; }
+
+/* ================= PROGRESS MINI ================= */
+.mini-progress{
+    margin-top:12px;
+    height:8px;
+    background:#e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.mini-progress div{
+    height:100%;
+    background:#3498db;
+    border-radius:10px;
+    transition:width 0.5s ease;
+}
+
+/* ================= CHART ================= */
+.chart-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.chart-card{
+    background:white;
+    padding:16px;
+    border-radius:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.04);
+}
+
+.chart-card h4{
+    margin-bottom:12px;
+    font-size:14px;
+    font-weight:600;
+}
+
+.chart-card canvas{
+    max-height:280px;
+}
+
+/* ================= ANALYTICS GRID ================= */
+.analytics-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-top:20px;
+}
+
+/* ================= CARD GENERAL ================= */
+.card{
+    background:#fff;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
+}
+
+/* ================= INSIGHT ================= */
+.insight-item{
+    padding:10px;
+    border-left:4px solid #ed1c24;
+    margin-bottom:10px;
+    background:#f9fafb;
+    border-radius:8px;
+}
+
+/* ================= LOSE ================= */
+.lose-item{
+    display:flex;
+    justify-content:space-between;
+    padding:10px;
+    background:#fee2e2;
+    border-radius:8px;
+    margin-bottom:10px;
+    color:#991b1b;
+}
+
+/* ================= WILAYAH ================= */
+.wilayah-list{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.wilayah-item{
+    margin-bottom:15px;
+    padding:14px;
+    border-radius:14px;
+    background:#f9fafb;
+    transition:0.2s;
+}
+
+.wilayah-item:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 15px rgba(0,0,0,0.05);
+}
+
+/* ================= COMPACT VERSION ================= */
+.wilayah-item.compact{
+    padding:10px;
+    border-radius:10px;
+    font-size:13px;
+}
+
+/* ================= TITLE ================= */
+.top-row{
+    display:flex;
+    justify-content:space-between;
+    font-weight:600;
+    margin-bottom:4px;
+}
+
+/* ================= PROGRESS ================= */
+.progress{
+    height:5px;
+    background:#e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+    margin:6px 0;
+}
+
+.progress.multi{
+    display:flex;
+}
+
+/* warna segment */
+.progress.multi .win{
+    background:#22c55e;
+}
+
+.progress.multi .lose{
+    background:#ef4444;
+}
+
+.progress.multi .unknown{
+    background:#facc15;
+}
+
+/* ================= FOOTER ================= */
+.footer{
+    font-size:12px;
+    color:#555;
+}
+
+.mini-footer{
+    font-size:11px;
+    color:#666;
+}
+
+.kategori-list{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.kategori-item{
+    padding:12px;
+    border-radius:12px;
+    background:#f9fafb;
+}
+
+.kategori-item .top-row{
+    display:flex;
+    justify-content:space-between;
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.kategori-item .progress{
+    height:5px;
+    background:#e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+    margin:6px 0;
+}
+
+.kategori-item .progress div{
+    height:100%;
+}
+
+.kategori-item .mini-footer{
+    font-size:11px;
+    color:#666;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:900px){
+
+    .stats-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .chart-grid{
+        grid-template-columns:1fr;
+    }
+
+    .analytics-grid{
+        grid-template-columns:1fr;
+    }
+
+    .wilayah-list{
+        grid-template-columns:1fr;
+    }
+}

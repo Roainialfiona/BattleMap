@@ -1,0 +1,37 @@
+// ============================================================
+// Tambahkan ke routes/web.php
+// ============================================================
+
+use App\Http\Controllers\HistoryController;
+
+Route::get('/history', [HistoryController::class, 'index']);
+
+
+// ============================================================
+// Tambahkan link History ke navbar di layouts/app.blade.php
+// Ganti bagian <div class="navbar"> dengan ini:
+// ============================================================
+
+<div class="navbar">
+    <a href="/dashboard" class="{{ request()->is('dashboard') ? 'active' : '' }}">Map</a>
+    <a href="/analytics" class="{{ request()->is('analytics') ? 'active' : '' }}">Analytics</a>
+    <a href="/history"   class="{{ request()->is('history')   ? 'active' : '' }}">History</a>
+</div>
+
+
+// ============================================================
+// CATATAN: Sheet "History" di Google Spreadsheet
+// Buat sheet baru dengan nama persis: History
+// Baris 1 (header) isi dengan:
+// ============================================================
+
+| Timestamp | Sheet | Row ID | Nama Lokasi | Field | Old Value | New Value | User |
+
+
+// ============================================================
+// NANTI kalau sudah ada login, di MapController.php
+// ganti baris ini:
+//   $user = '—';
+// dengan:
+//   $user = auth()->user()->name ?? session('user_name') ?? '—';
+// ============================================================
