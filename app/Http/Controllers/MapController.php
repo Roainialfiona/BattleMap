@@ -233,7 +233,8 @@ class MapController extends Controller
         $sheet = $request->sheet;
 
         $client = new \Google_Client();
-        $client->setAuthConfig(storage_path('app/credentials.json'));
+        $credentials = json_decode(env('GOOGLE_CREDENTIALS'), true);
+        $client->setAuthConfig($credentials);
         $client->addScope(\Google_Service_Sheets::SPREADSHEETS);
 
         $service = new \Google_Service_Sheets($client);
