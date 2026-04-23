@@ -12,7 +12,11 @@ class GoogleSheetsService
     public function __construct()
     {
         $client = new Client();
-        $client->setAuthConfig(storage_path('app/credentials.json'));
+        
+        // Baca dari environment variable, bukan dari file
+        $credentials = json_decode(env('GOOGLE_CREDENTIALS'), true);
+        $client->setAuthConfig($credentials);
+        
         $client->addScope(Sheets::SPREADSHEETS_READONLY);
         $this->service = new Sheets($client);
     }
