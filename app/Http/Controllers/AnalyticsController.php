@@ -51,6 +51,10 @@ class AnalyticsController extends Controller
                 'New_SPPG'      => 'SPPG',
                 'New_KDMP'      => 'KDMP',
                 'New_Faskes'    => 'Faskes',
+                'New_Hotel'     => 'Hotel',
+                'New_Wisata'    => 'Wisata',
+                'New_Bank'      => 'Bank',
+                'New_Koperasi'  => 'Koperasi',
             ];
 
             $rows = [];
@@ -120,6 +124,10 @@ class AnalyticsController extends Controller
             'SPPG'      => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'KDMP'      => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'Faskes'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
+            'Hotel'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
+            'Bank'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
+            'Wisata'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
+            'Koperasi'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
         ];
 
         foreach ($filtered as $row) {
