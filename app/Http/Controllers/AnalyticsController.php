@@ -45,7 +45,7 @@ class AnalyticsController extends Controller
 
             $service       = new \Google_Service_Sheets($client);
             $spreadsheetId = '1tRA1dcU208Fdw3BGHnaLB6jCtBGRHJEIiOH7GmFkoP8';
-            $sheets        = ['New_Education', 'New_SPPG', 'New_KDMP', 'New_Faskes'];
+            $sheets        = ['New_Education', 'New_SPPG', 'New_KDMP', 'New_Faskes', 'New_Hotel', 'New_Bank', 'New_Koperasi','New_Wisata'];
             $katMap        = [
                 'New_Education' => 'Education',
                 'New_SPPG'      => 'SPPG',
