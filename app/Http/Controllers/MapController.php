@@ -147,9 +147,9 @@ class MapController extends Controller
                         'hasil' => $row[$hasilIndex] ?? '-',
                         'alamat' => $row[$alamatIndex] ?? '-',
                         'follow_up'   => $row[$followUpIndex] ?? '-',
-                        'npsn'         => $row[$npsnIndex]    ?? '-';
-                        'jenjang'  => $row[$jenjangIndex] ?? '-';
-                        'nipnas'  => $row[$nipnasIndex]  ?? '-';
+                        'npsn'         => $row[$npsnIndex]    ?? '-',
+                        'jenjang'  => $row[$jenjangIndex] ?? '-',
+                        'nipnas'  => $row[$nipnasIndex]  ?? '-',
                         'tanggal_ps'  => $tglPsIndex !== false ? ($row[$tglPsIndex] ?? '') : ''
                     ];
 
