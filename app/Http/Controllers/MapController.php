@@ -112,6 +112,9 @@ class MapController extends Controller
                 $alamatIndex            = array_search('alamat', $header);
                 $followUpIndex          = array_search('follow up', $header);
                 $tglPsIndex             = array_search('tanggal ps', $header);
+                $npsnIndex             = array_search('npsn', $header);
+                $jenjangIndex          = array_search('jenjang', $header);
+                $nipnasIndex           = array_search('nipnas', $header);
 
                 if ($namaIndex === false || $latIndex === false || $lngIndex === false) {
                     continue;
@@ -144,6 +147,9 @@ class MapController extends Controller
                         'hasil' => $row[$hasilIndex] ?? '-',
                         'alamat' => $row[$alamatIndex] ?? '-',
                         'follow_up'   => $row[$followUpIndex] ?? '-',
+                        'npsn'         => $row[$npsnIndex]    ?? '-';
+                        'jenjang'  => $row[$jenjangIndex] ?? '-';
+                        'nipnas'  => $row[$nipnasIndex]  ?? '-';
                         'tanggal_ps'  => $tglPsIndex !== false ? ($row[$tglPsIndex] ?? '') : ''
                     ];
 
