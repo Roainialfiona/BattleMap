@@ -1,9 +1,39 @@
+/* ================= OUTER ================= */
+.analytics-outer{
+    background:#f4f6f9;
+}
+
+/* ================= CONTAINER ================= */
+.analytics-container{
+    max-width:1200px;
+    margin:0 auto;
+    padding:0 20px;
+    padding-top:0 !important;
+    padding:0 20px 30px 20px;
+}
+
+/* ================= HEADER ================= */
+.analytics-header{
+    max-width:1200px;
+    margin:0 auto 20px auto;
+}
+
+/* ================= TITLE ================= */
+.page-title{
+    font-size:26px;
+    font-weight:700;
+    margin-top:10px;
+    margin-bottom:12px;
+    margin-top:0 !important;
+}
+
 /* ================= GRID ================= */
 .stats-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)) !important;
     gap:18px;
-    margin-bottom:25px;
+    margin-bottom:20px;
+    margin-top:0;
 }
 
 /* ================= CARD ================= */
@@ -34,26 +64,10 @@
 }
 
 /* ================= COLORS ================= */
-.mini-card.followup{ border-left:4px solid #f39c12; }
 .mini-card.win{ border-left:4px solid #2ecc71; }
 .mini-card.lose{ border-left:4px solid #e74c3c; }
-.mini-card.unknown{ border-left:4px solid #95a5a6; }
-
-/* ================= PROGRESS MINI ================= */
-.mini-progress{
-    margin-top:12px;
-    height:8px;
-    background:#e5e7eb;
-    border-radius:10px;
-    overflow:hidden;
-}
-
-.mini-progress div{
-    height:100%;
-    background:#3498db;
-    border-radius:10px;
-    transition:width 0.5s ease;
-}
+.mini-card.unknown{ border-left:4px solid #ffd61e; }
+.mini-card.Done{ border-left:4px solid #404daf; }
 
 /* ================= CHART ================= */
 .chart-grid{
@@ -64,9 +78,10 @@
 
 .chart-card{
     background:white;
-    padding:16px;
+    padding:20px;
     border-radius:14px;
     box-shadow:0 4px 12px rgba(0,0,0,0.04);
+    margin-bottom:20px;
 }
 
 .chart-card h4{
@@ -87,39 +102,12 @@
     margin-top:20px;
 }
 
-/* ================= CARD GENERAL ================= */
-.card{
-    background:#fff;
-    padding:20px;
-    border-radius:16px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.05);
-}
-
-/* ================= INSIGHT ================= */
-.insight-item{
-    padding:10px;
-    border-left:4px solid #ed1c24;
-    margin-bottom:10px;
-    background:#f9fafb;
-    border-radius:8px;
-}
-
-/* ================= LOSE ================= */
-.lose-item{
-    display:flex;
-    justify-content:space-between;
-    padding:10px;
-    background:#fee2e2;
-    border-radius:8px;
-    margin-bottom:10px;
-    color:#991b1b;
-}
-
 /* ================= WILAYAH ================= */
 .wilayah-list{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
     gap:12px;
+    justify-content:center;
 }
 
 .wilayah-item{
@@ -187,58 +175,150 @@
     color:#666;
 }
 
-.kategori-list{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-}
-
-.kategori-item{
-    padding:12px;
-    border-radius:12px;
-    background:#f9fafb;
-}
-
-.kategori-item .top-row{
-    display:flex;
-    justify-content:space-between;
-    font-weight:600;
-    margin-bottom:6px;
-}
-
-.kategori-item .progress{
-    height:5px;
-    background:#e5e7eb;
-    border-radius:10px;
-    overflow:hidden;
-    margin:6px 0;
-}
-
-.kategori-item .progress div{
-    height:100%;
-}
-
-.kategori-item .mini-footer{
-    font-size:11px;
-    color:#666;
-}
-
 /* ================= RESPONSIVE ================= */
 @media(max-width:900px){
 
     .stats-grid{
         grid-template-columns:1fr 1fr;
     }
-
-    .chart-grid{
-        grid-template-columns:1fr;
-    }
-
-    .analytics-grid{
-        grid-template-columns:1fr;
-    }
-
     .wilayah-list{
         grid-template-columns:1fr;
     }
+}
+
+/* ================= FILTER ================= */
+.filter-container{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:8px;
+}
+
+.filter-btn{
+    padding:7px 16px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+    text-decoration:none;
+    background:#f0f0f0;
+    color:#495057;
+    transition:0.2s;
+}
+
+.filter-btn:hover{
+    opacity:0.85;
+}
+
+.filter-btn.active{
+    background:#ed1c24;
+    color:#fff;
+    box-shadow:0 4px 10px rgba(237,28,36,0.3);
+}
+
+/* ================= CUSTOM DATE RANGE ================= */
+.date-filter{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.date-input{
+    padding:6px 10px;
+    border:1px solid #dee2e6;
+    border-radius:8px;
+    font-size:13px;
+}
+
+.date-separator{
+    color:#6c757d;
+}
+
+.date-btn{
+    padding:7px 14px;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:bold;
+    background:#6c757d;
+    transition:0.2s;
+}
+
+.date-btn.active{
+    background:#ed1c24;
+}
+
+.date-btn:hover{
+    opacity:0.9;
+}
+
+/* ================= LABEL PERIODE ================= */
+.periode-label{
+    font-size:12px;
+    color:#6c757d;
+    margin-left:4px;
+}
+
+/* ================= KATEGORI DETAIL ================= */
+.kategori-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:12px;
+    margin-top:15px;
+}
+
+.kategori-card{
+    background:#f8f9fa;
+    border-radius:8px;
+    padding:12px;
+}
+
+.kategori-header{
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.kategori-bar{
+    height:10px;
+    border-radius:4px;
+    overflow:hidden;
+    display:flex;
+    margin-bottom:6px;
+}
+
+.kategori-bar .win{
+    background:#28a745;
+}
+
+.kategori-bar .lose{
+    background:#dc3545;
+}
+
+.kategori-bar .unknown{
+    background:#ffc107;
+}
+
+.kategori-footer{
+    font-size:12px;
+    color:#6c757d;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.kategori-footer .win-rate{
+    margin-left:auto;
+    font-weight:bold;
+    color:#28a745;
+}
+
+.chart-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
 }
