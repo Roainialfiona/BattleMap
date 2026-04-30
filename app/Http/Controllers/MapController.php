@@ -29,7 +29,7 @@ class MapController extends Controller
                 'kdmp'      => [],
                 'faskes'    => [],
                 'hotel'     => [],
-                'bank'      => [],
+                'finance'      => [],
                 'wisata'    => [],
                 'koperasi'  => []
             ];
@@ -41,7 +41,7 @@ class MapController extends Controller
                 'New_Faskes',
                 'New_Hotel',
                 'New_Wisata',
-                'New_Bank',
+                'New_Finance',
                 'New_Koperasi'
             ];
 
@@ -76,7 +76,7 @@ class MapController extends Controller
                     'lat'  => 'latitude',
                     'lng'  => 'longitude',
                 ],
-                'New_Bank' => [
+                'New_Finance' => [
                     'nama' => 'nama bank',
                     'lat'  => 'latitude',
                     'lng'  => 'longitude',
@@ -175,7 +175,7 @@ class MapController extends Controller
                             $data['hotel'][] = $item;
                             break;
 
-                        case 'New_Bank':
+                        case 'New_Finance':
                             $data['bank'][] = $item;
                             break;
                         case 'New_Wisata':
@@ -201,7 +201,7 @@ class MapController extends Controller
             'faskes'=>$data['faskes'],
             'koperasi'=>$data['koperasi'],
             'wisata'=>$data['wisata'],
-            'bank'=>$data['bank'],
+            'finance'=>$data['finance'],
             'hotel'=>$data['hotel']
         ]);
 
