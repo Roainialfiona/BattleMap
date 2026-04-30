@@ -13,7 +13,7 @@ class MapController extends Controller
     public function index()
     {
 
-        $data = Cache::remember('battle_map_cache', 5, function () {
+        $data = Cache::remember('battle_map_cache', 30, function () {
 
             $client = new \Google_Client();
             $client->setApplicationName('Battle Map');
@@ -112,9 +112,6 @@ class MapController extends Controller
                 $alamatIndex            = array_search('alamat', $header);
                 $followUpIndex          = array_search('follow up', $header);
                 $tglPsIndex             = array_search('tanggal ps', $header);
-                $npsnIndex             = array_search('npsn', $header);
-                $jenjangIndex          = array_search('jenjang', $header);
-                $nipnasIndex           = array_search('nipnas', $header);
 
                 if ($namaIndex === false || $latIndex === false || $lngIndex === false) {
                     continue;
@@ -147,9 +144,6 @@ class MapController extends Controller
                         'hasil' => $row[$hasilIndex] ?? '-',
                         'alamat' => $row[$alamatIndex] ?? '-',
                         'follow_up'   => $row[$followUpIndex] ?? '-',
-                        'npsn'         => $row[$npsnIndex]    ?? '-',
-                        'jenjang'  => $row[$jenjangIndex] ?? '-',
-                        'nipnas'  => $row[$nipnasIndex]  ?? '-',
                         'tanggal_ps'  => $tglPsIndex !== false ? ($row[$tglPsIndex] ?? '') : ''
                     ];
 
@@ -176,7 +170,7 @@ class MapController extends Controller
                             break;
 
                         case 'New_Finance':
-                            $data['bank'][] = $item;
+                            $data['finance'][] = $item;
                             break;
                         case 'New_Wisata':
                             $data['wisata'][] = $item;
@@ -221,7 +215,7 @@ class MapController extends Controller
             ->merge($data['kdmp'])
             ->merge($data['faskes'])
             ->merge($data['hotel'])
-            ->merge($data['bank'])
+            ->merge($data['finance'])
             ->merge($data['wisata'])
             ->merge($data['koperasi']);
 
