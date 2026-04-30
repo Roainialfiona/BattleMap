@@ -1,10 +1,10 @@
 /* ================= ACTION BAR ================= */
 .action-bar{
     display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin:15px 0;
     align-items:center;
+    gap:10px;
+    margin-bottom: 20px;
+    flex-wrap:nowrap;
 }
 
 .action-bar input{
@@ -26,6 +26,70 @@
 
 .action-bar button:hover{
     background:#c20510;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 270px; 
+}
+
+#searchInput {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.suggestion-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    max-height: 180px;
+    overflow-y: auto;
+
+    z-index: 9999;
+    margin-top: 5px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.search-group{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-group button{
+    white-space: nowrap;
+}
+
+.suggestion-item {
+    padding: 8px 10px;     
+    line-height: 1.2;         
+    cursor: pointer;
+    font-size: 13px; 
+}
+
+.suggestion-item:hover {
+    background: #f5f5f5;
+}
+
+.suggestion-item strong {
+    display: block;          
+}
+
+.suggestion-item small {
+    display: block;         
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
 }
 
 /* ================= LAYOUT ================= */
@@ -97,6 +161,120 @@
 #map{
     height:68vh;
     border-radius:14px;
+}
+
+/* ================= MARKER COUNTER ================= */
+.marker-counter{
+    background:#f8f9fa;
+    border-radius:8px;
+    padding:8px 12px;
+    text-align:center;
+    font-size:13px;
+    color:#495057;
+    margin-bottom:4px;
+    border:1px solid #dee2e6;
+}
+
+/* ================= FILTER LABEL ================= */
+.filter-label{
+    font-size:11px;
+    color:#6c757d;
+    margin-bottom:2px;
+    display:block;
+}
+
+.mt-8{
+    margin-top:8px;
+}
+
+/* ================= STATUS FILTER ================= */
+.status-filter{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+/* item checkbox */
+.status-filter-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    cursor:pointer;
+    padding:5px 8px;
+    border-radius:6px;
+    border:1px solid #dee2e6;
+    font-size:13px;
+}
+
+/* dot warna */
+.dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    display:inline-block;
+}
+
+.dot-win{ background:#28a745; }
+.dot-lose{ background:#dc3545; }
+.dot-notvisit{ background:#adb5bd; }
+.dot-unknown{ background:#ffc107; }
+
+/* ================= FOLLOW UP ================= */
+.followup-toggle{
+    margin-top:8px;
+    font-size:13px;
+}
+
+/* ================= MARKER COLOR ================= */
+
+/* default */
+.custom-marker.status-default {
+    border-color: #6c757d;
+}
+
+.custom-marker.status-default i {
+    color: #6c757d;
+}
+
+/* WIN */
+.custom-marker.status-win {
+    border-color: #28a745;
+}
+.custom-marker.status-win i {
+    color: #28a745;
+}
+
+/* LOSE */
+.custom-marker.status-lose {
+    border-color: #dc3545;
+}
+.custom-marker.status-lose i {
+    color: #dc3545;
+}
+
+/* UNKNOWN */
+.custom-marker.status-unknown {
+    border-color: #ffd61e;
+}
+.custom-marker.status-unknown i {
+    color: #ffd61e;
+}
+
+/* NOT VISIT */
+.custom-marker.status-notvisit {
+    border-color: #adb5bd;
+}
+.custom-marker.status-notvisit i {
+    color: #adb5bd;
+}
+
+/* FOLLOW UP (override semua) */
+.custom-marker.status-followup {
+    border-color: #ff0000;
+    box-shadow: 0 0 15px red;
+}
+.custom-marker.status-followup i {
+    color: #ff0000;
 }
 
 /* ================= ROUTE BUILDER ================= */
@@ -223,6 +401,39 @@
     margin: 6px 0;
 }
 
+.btn-nav {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-top: 10px;
+    margin-right: 6px;
+
+    background: #2d7ef7; /* biru */
+    color: #fff !important; /* 🔥 ini kunci biar teks putih */
+
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn-nav:hover {
+    background: #1c5ed6;
+}
+
+.btn-edit {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-top: 10px;
+
+    background: #6c757d;
+    color: #fff;
+
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
 /* ================= BUTTON ================= */
 
 .btn-nav {
@@ -285,4 +496,278 @@
 
 .popup-form button:hover {
     background: #0b5ed7;
+}
+
+/* ================= POPUP FORM IMPROVEMENT ================= */
+
+.popup-form textarea{
+    width:100%;
+    padding:6px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    resize:vertical;
+    font-size:13px;
+}
+
+.popup-form input[type="date"],
+.popup-form input[type="text"]{
+    width:100%;
+    padding:6px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:13px;
+}
+
+/* action buttons */
+.popup-actions{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+}
+
+.btn-save{
+    flex:1;
+    background:#28a745;
+    color:#fff;
+    border:none;
+    padding:8px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-save:hover{
+    background:#218838;
+}
+
+.btn-cancel{
+    flex:1;
+    background:#6c757d;
+    color:#fff;
+    border:none;
+    padding:8px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.btn-cancel:hover{
+    background:#5a6268;
+}
+
+/* ================= SUGGESTION ITEM ================= */
+
+.suggestion-item{
+    padding:8px 12px;
+    cursor:pointer;
+    border-bottom:1px solid #f0f0f0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.suggestion-item:hover{
+    background:#f8f9fa;
+}
+
+/* nama */
+.suggestion-name{
+    font-size:13px;
+    display:block;
+}
+
+/* tipe */
+.suggestion-type{
+    color:#6c757d;
+    font-size:12px;
+    display:block;
+}
+
+/* badge kanan */
+.suggestion-badge{
+    font-size:11px;
+    font-weight:bold;
+    padding:2px 7px;
+    border-radius:10px;
+    color:#fff;
+}
+
+/* ================= TOAST ================= */
+
+.routing-toast{
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background: #0d6efd;
+    color: #fff;
+
+    padding: 10px 22px;
+    border-radius: 8px;
+
+    font-weight: bold;
+    z-index: 9999;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,.2);
+
+    animation: fadeIn 0.3s ease;
+}
+
+/* animasi biar smooth */
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateX(-50%) translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(-50%) translateY(0);
+    }
+}
+
+.toast{
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    padding: 10px 22px;
+    border-radius: 8px;
+
+    color: #fff;
+    font-weight: bold;
+
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,.2);
+
+    opacity: 1;
+    transition: opacity .4s, transform .3s;
+}
+
+/* warna */
+.toast-success{
+    background: #28a745;
+}
+
+.toast-error{
+    background: #dc3545;
+}
+
+.toast-info{
+    background: #0d6efd;
+}
+
+/* animasi masuk */
+.toast{
+    animation: toastIn .3s ease;
+}
+
+@keyframes toastIn{
+    from{
+        opacity:0;
+        transform:translateX(-50%) translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(-50%) translateY(0);
+    }
+}
+
+/* animasi keluar */
+.toast.hide{
+    opacity:0;
+    transform:translateX(-50%) translateY(10px);
+}
+
+/* ================= FOLLOW UP PANEL ================= */
+
+.followup-panel{
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 300px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    z-index: 9999;
+    overflow: hidden;
+    animation: slideIn .3s ease;
+    font-family: sans-serif;
+}
+
+/* header */
+.followup-header{
+    background: #dc3545;
+    color: #fff;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.followup-title{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.followup-close{
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* list */
+.followup-list{
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+/* item */
+.followup-item{
+    padding: 10px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    transition: background .15s;
+}
+
+.followup-item:hover{
+    background: #f8f9fa;
+}
+
+.followup-type{
+    display:block;
+    font-size:12px;
+    color:#6c757d;
+}
+
+/* footer */
+.followup-footer{
+    padding:10px 16px;
+    background:#f8f9fa;
+}
+
+.followup-btn{
+    width:100%;
+    padding:8px;
+    background:#dc3545;
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:13px;
+}
+
+.followup-btn:hover{
+    background:#c82333;
+}
+
+/* animation */
+@keyframes slideIn{
+    from { opacity:0; transform: translateX(20px); }
+    to   { opacity:1; transform: translateX(0); }
 }
