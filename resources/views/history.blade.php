@@ -4,7 +4,7 @@
 
 <div class="container analytics-container">
 
-    <h2 class="page-title">📋 History Perubahan</h2>
+    <h2 class="page-title">History Perubahan</h2>
 
     {{-- ================= FILTER ================= --}}
     <form method="GET" action="{{ url('/history') }}"
@@ -12,7 +12,7 @@
 
         {{-- Search --}}
         <input type="text" name="search" value="{{ $search }}"
-               placeholder="🔍 Cari nama lokasi / nilai..."
+               placeholder="Cari nama lokasi / nilai..."
                style="padding:8px 14px;border:1px solid #dee2e6;border-radius:20px;font-size:13px;min-width:220px;">
 
         {{-- Filter sheet --}}
@@ -74,7 +74,7 @@
         <table style="width:100%;border-collapse:collapse;font-size:13px;background:#fff;">
             <thead>
                 <tr style="background:#f8f9fa;border-bottom:2px solid #dee2e6;">
-                    <th style="padding:12px 14px;text-align:left;color:#495057;white-space:nowrap;">⏰ Waktu</th>
+                    <th style="padding:12px 14px;text-align:left;color:#495057;white-space:nowrap;">Waktu</th>
                     <th style="padding:12px 14px;text-align:left;color:#495057;">Sheet</th>
                     <th style="padding:12px 14px;text-align:left;color:#495057;">Lokasi</th>
                     <th style="padding:12px 14px;text-align:left;color:#495057;">Field</th>
@@ -97,10 +97,14 @@
                     <td style="padding:10px 14px;">
                         @php
                             $badgeColor = match($row['sheet']) {
-                                'New_Education' => '#0d6efd',
-                                'New_SPPG'      => '#198754',
-                                'New_KDMP'      => '#fd7e14',
-                                'New_Faskes'    => '#6f42c1',
+                                'New_Education' => '#0d6efd',  // Biru
+                                'New_SPPG'      => '#198754',  // Hijau
+                                'New_KDMP'      => '#fd7e14',  // Oranye
+                                'New_Faskes'    => '#6f42c1',  // Ungu
+                                'New_Finance'   => '#d63384',  // Pink
+                                'New_Hotel'     => '#0dcaf0',  // Cyan
+                                'New_Wisata'    => '#20c997',  // Teal
+                                'New_Koperasi'  => '#ffc107',  // Kuning
                                 default         => '#6c757d',
                             };
                             $badgeLabel = match($row['sheet']) {
@@ -108,6 +112,10 @@
                                 'New_SPPG'      => 'SPPG',
                                 'New_KDMP'      => 'KDMP',
                                 'New_Faskes'    => 'Faskes',
+                                'New_Hotel'     => 'Hotel',
+                                'New_Wisata'    => 'Wisata',
+                                'New_Finance'   => 'Finance',
+                                'New_Koperasi'  => 'Koperasi',
                                 default         => $row['sheet'],
                             };
                         @endphp
