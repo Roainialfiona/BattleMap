@@ -31,30 +31,29 @@
     <a href="/history"   class="{{ request()->is('history')   ? 'active' : '' }}">History</a>
 
     @if(session('auth_user') && session('auth_user')['role'] === 'admin')
-        <a href="/users" class="{{ request()->is('users') ? 'active' : '' }}">👥 Users</a>
+        <a href="/users" class="{{ request()->is('users') ? 'active' : '' }}">Users</a>
     @endif
 
-    {{-- Auth section di kanan --}}
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+    <!-- RIGHT SIDE -->
+    <div class="nav-right">
+
         @if(session('auth_user'))
-            <span style="font-size:13px;color:#6c757d;">
-                👤 {{ session('auth_user')['name'] }}
+            <span class="nav-user">
+                {{ session('auth_user')['name'] }}
             </span>
-            <form method="POST" action="{{ url('/logout') }}" style="margin:0;">
+
+            <form method="POST" action="{{ url('/logout') }}" class="nav-form">
                 @csrf
-                <button type="submit"
-                        style="padding:5px 14px;background:#f0f0f0;color:#495057;border:none;
-                               border-radius:20px;font-size:13px;cursor:pointer;font-weight:600;">
+                <button type="submit" class="nav-logout-btn">
                     Logout
                 </button>
             </form>
         @else
-            <a href="/login"
-               style="padding:5px 16px;background:#ed1c24;color:#fff;border-radius:20px;
-                      font-size:13px;font-weight:700;text-decoration:none;">
-                🔑 Login
+            <a href="/login" class="nav-login-btn">
+                Login
             </a>
         @endif
+
     </div>
 </div>
 
