@@ -77,7 +77,7 @@ class MapController extends Controller
                     'lng'  => 'longitude',
                 ],
                 'New_Finance' => [
-                    'nama' => 'nama bank',
+                    'nama' => 'nama instansi',
                     'lat'  => 'latitude',
                     'lng'  => 'longitude',
                 ],
@@ -267,7 +267,7 @@ class MapController extends Controller
         // =========================================================
         // Coba beberapa kemungkinan header nama
         $namaCol  = 'nama satuan pendidikan';
-        foreach (['nama satuan pendidikan','nama sppg','nama kdmp','nama faskes','nama hotel','nama wisata','nama koperasi','nama bank'] as $nc) {
+        foreach (['nama satuan pendidikan','nama sppg','nama kdmp','nama faskes','nama hotel','nama wisata','nama koperasi','nama instansi'] as $nc) {
             if (array_search($nc, $headers) !== false) { $namaCol = $nc; break; }
         }
         $namaLokasi = $getOld($namaCol) ?: ('Row #' . $id);
