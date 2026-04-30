@@ -45,7 +45,7 @@ class AnalyticsController extends Controller
 
             $service       = new \Google_Service_Sheets($client);
             $spreadsheetId = '1tRA1dcU208Fdw3BGHnaLB6jCtBGRHJEIiOH7GmFkoP8';
-            $sheets        = ['New_Education', 'New_SPPG', 'New_KDMP', 'New_Faskes', 'New_Hotel', 'New_Bank', 'New_Koperasi','New_Wisata'];
+            $sheets        = ['New_Education', 'New_SPPG', 'New_KDMP', 'New_Faskes', 'New_Hotel', 'New_Finance', 'New_Koperasi','New_Wisata'];
             $katMap        = [
                 'New_Education' => 'Education',
                 'New_SPPG'      => 'SPPG',
@@ -53,7 +53,7 @@ class AnalyticsController extends Controller
                 'New_Faskes'    => 'Faskes',
                 'New_Hotel'     => 'Hotel',
                 'New_Wisata'    => 'Wisata',
-                'New_Bank'      => 'Bank',
+                'New_Finance'      => 'Finance',
                 'New_Koperasi'  => 'Koperasi',
             ];
 
@@ -125,7 +125,7 @@ class AnalyticsController extends Controller
             'KDMP'      => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'Faskes'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'Hotel'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
-            'Bank'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
+            'Finance'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'Wisata'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'Koperasi'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
         ];
