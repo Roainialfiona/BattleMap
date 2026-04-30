@@ -53,7 +53,7 @@ class AnalyticsController extends Controller
                 'New_Faskes'    => 'Faskes',
                 'New_Hotel'     => 'Hotel',
                 'New_Wisata'    => 'Wisata',
-                'New_Finance'      => 'Bank',
+                'New_Finance'      => 'Finance',
                 'New_Koperasi'  => 'Koperasi',
             ];
 
@@ -131,7 +131,7 @@ class AnalyticsController extends Controller
             'KDMP'      => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'Faskes'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'Hotel'     => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
-            'Bank'      => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
+            'Finance'      => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'Wisata'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'Koperasi'  => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
         ];
