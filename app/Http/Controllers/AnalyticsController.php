@@ -45,7 +45,7 @@ class AnalyticsController extends Controller
 
             $service       = new \Google_Service_Sheets($client);
             $spreadsheetId = '1tRA1dcU208Fdw3BGHnaLB6jCtBGRHJEIiOH7GmFkoP8';
-            $sheets        = ['New_Education', 'New_SPPG', 'New_KDMP', 'New_Faskes', 'New_Hotel', 'New_Finance', 'New_Koperasi','New_Wisata'];
+            $sheets        = ['New_Education', 'New_SPPG', 'New_KDMP', 'New_Faskes', 'New_Hotel', 'New_Finance', 'New_Koperasi', 'New_Wisata'];
             $katMap        = [
                 'New_Education' => 'Education',
                 'New_SPPG'      => 'SPPG',
@@ -53,7 +53,7 @@ class AnalyticsController extends Controller
                 'New_Faskes'    => 'Faskes',
                 'New_Hotel'     => 'Hotel',
                 'New_Wisata'    => 'Wisata',
-                'New_Finance'      => 'Finance',
+                'New_Finance'      => 'Bank',
                 'New_Koperasi'  => 'Koperasi',
             ];
 
@@ -65,13 +65,14 @@ class AnalyticsController extends Controller
 
                 if (empty($values)) continue;
 
-                $header    = array_map(fn($h) => strtolower(trim($h)), $values[0]);
-                $latIndex  = array_search('latitude',  $header);
-                $lngIndex  = array_search('longitude', $header);
-                $statIndex = array_search('stat',      $header);
-                $wilIndex  = array_search('kecamatan', $header);
-                $dateIndex = array_search('tanggal ps', $header);
-    
+                $header       = array_map(fn($h) => strtolower(trim($h)), $values[0]);
+                $latIndex     = array_search('latitude',  $header);
+                $lngIndex     = array_search('longitude', $header);
+                $statIndex    = array_search('stat',      $header);
+                $wilIndex     = array_search('kecamatan', $header);
+                $dateIndex    = array_search('tanggal ps', $header);
+                $visitIndex   = array_search('visiting',  $header); // ← TAMBAH INI
+
                 foreach (array_slice($values, 1) as $row) {
                     $lat = $row[$latIndex] ?? null;
                     $lng = $row[$lngIndex] ?? null;
@@ -84,20 +85,25 @@ class AnalyticsController extends Controller
                     $dateRaw = $dateIndex !== false ? ($row[$dateIndex] ?? null) : null;
                     $date    = null;
                     if ($dateRaw) {
-                        // Handle format DD/MM/YYYY dari Google Sheets
                         if (preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', trim($dateRaw), $m)) {
-                            $date = $m[3] . '-' . $m[2] . '-' . $m[1]; // → YYYY-MM-DD
+                            $date = $m[3] . '-' . $m[2] . '-' . $m[1];
                         } else {
                             $parsed = strtotime($dateRaw);
                             if ($parsed) $date = date('Y-m-d', $parsed);
                         }
                     }
 
+                    // ← TAMBAH visiting
+                    $visiting = $visitIndex !== false
+                        ? strtoupper(trim($row[$visitIndex] ?? ''))
+                        : '';
+
                     $rows[] = [
                         'stat'     => $stat,
                         'wilayah'  => $wil,
                         'date'     => $date,
                         'kategori' => $katMap[$sheetName] ?? $sheetName,
+                        'visiting' => $visiting, // ← TAMBAH INI
                     ];
                 }
             }
@@ -124,11 +130,14 @@ class AnalyticsController extends Controller
             'SPPG'      => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'KDMP'      => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'Faskes'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
-            'Hotel'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
-            'Finance'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
+            'Hotel'     => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
+            'Bank'      => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
             'Wisata'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
-            'Koperasi'    => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
+            'Koperasi'  => ['total' => 0, 'win' => 0, 'lose' => 0, 'unknown' => 0],
         ];
+
+        // ← HITUNG DONE VISIT
+        $doneVisit = $filtered->filter(fn($r) => ($r['visiting'] ?? '') === 'DONE')->count();
 
         foreach ($filtered as $row) {
             $stat = $row['stat'];
@@ -143,7 +152,6 @@ class AnalyticsController extends Controller
             $wilayah[$wil] = ($wilayah[$wil] ?? 0) + 1;
             if ($stat === 'lose') $loseWilayah[$wil] = ($loseWilayah[$wil] ?? 0) + 1;
 
-            $date = $row['date'];
             if ($date) {
                 if (!isset($daily[$date])) $daily[$date] = ['win' => 0, 'lose' => 0, 'unknown' => 0];
                 if ($stat === 'win')      $daily[$date]['win']++;
@@ -170,7 +178,7 @@ class AnalyticsController extends Controller
 
         $totalAll       = array_sum($statusCounts);
         $played         = $statusCounts['win'] + $statusCounts['lose'];
-        $conversionRate = $played > 0 ? ($statusCounts['win'] / $played) * 100 : 0;
+        $conversionRate = $totalAll > 0 ? ($statusCounts['win'] / $totalAll) * 100 : 0;
         $notVisit       = $statusCounts['unknown'];
 
         $group = [];
@@ -190,7 +198,7 @@ class AnalyticsController extends Controller
             $group[$w]['win_pct']     = $t ? ($v['win']     / $t) * 100 : 0;
             $group[$w]['lose_pct']    = $t ? ($v['lose']    / $t) * 100 : 0;
             $group[$w]['unknown_pct'] = $t ? ($v['unknown'] / $t) * 100 : 0;
-            $group[$w]['conversion']  = $v['played'] ? ($v['win'] / $v['played']) * 100 : 0;
+            $group[$w]['conversion'] = $v['total'] ? ($v['win'] / $v['total']) * 100 : 0;
         }
 
         $topWilayah = collect($group)->sortByDesc('total')->take(5);
@@ -204,6 +212,7 @@ class AnalyticsController extends Controller
             'totalAll'       => $totalAll,
             'conversionRate' => round($conversionRate, 2),
             'notVisit'       => $notVisit,
+            'doneVisit'      => $doneVisit, // ← TAMBAH INI
             'topWilayah'     => $topWilayah,
             'topLose'        => $topLose,
             'wilayah'        => $wilayah,
