@@ -52,8 +52,8 @@
         </div>
 
         <div class="stat-box">
-            <span>Bank</span>
-            <strong>{{ count($bank ?? []) }}</strong>
+            <span>Finance</span>
+            <strong>{{ count($finance ?? []) }}</strong>
         </div>
 
         <div class="stat-box">
@@ -79,7 +79,7 @@
             <option value="sppg">SPPG</option>
             <option value="kdmp">KDMP</option>
             <option value="faskes">Faskes</option>
-            <option value="bank">Bank</option>
+            <option value="finance">Finance</option>
             <option value="koperasi">Koperasi</option>
             <option value="hotel">Hotel</option>
             <option value="wisata">Wisata</option>
@@ -159,7 +159,7 @@ function getCustomIcon(type, status, isFollowUpToday = false) {
     if (type === "faskes") iconClass = "fa-syringe";
     if (type === "sppg") iconClass = "fa-utensils";
     if (type === "kdmp") iconClass = "fa-store";
-    if (type === "bank") iconClass = "fa-building-columns";
+    if (type === "finance") iconClass = "fa-building-columns";
     if (type === "koperasi") iconClass = "fa-handshake";
     if (type === "hotel") iconClass = "fa-bed";
     if (type === "wisata") iconClass = "fa-umbrella-beach";
@@ -344,7 +344,7 @@ function generatePopup(item, type) {
             </div>`;
     }
 
-    if (type === 'bank') {
+    if (type === 'finance') {
         return `
             <div class="popup-box">
                 <strong>${item.nama}</strong>
@@ -469,7 +469,7 @@ var education=@json($education ?? []);
 var sppg=@json($sppg ?? []);
 var kdmp=@json($kdmp ?? []);
 var faskes=@json($faskes ?? []);
-var bank=@json($bank ?? []);
+var finance=@json($finance ?? []);
 var koperasi=@json($koperasi ?? []);
 var hotel=@json($hotel ?? []);
 var wisata=@json($wisata ?? []);
@@ -481,7 +481,7 @@ addMarkers(education,'edu',map);
 addMarkers(sppg,'sppg',map);
 addMarkers(kdmp,'kdmp',map);
 addMarkers(faskes,'faskes',map);
-addMarkers(bank,'bank',map);
+addMarkers(finance,'finance',map);
 addMarkers(koperasi,'koperasi',map);
 addMarkers(hotel,'hotel',map);
 addMarkers(wisata,'wisata',map);
@@ -975,7 +975,7 @@ function showFollowUpNotification() {
 
         var typeLabel = {
             edu:'Education', sppg:'SPPG', kdmp:'KDMP', faskes:'Faskes',
-            bank:'Bank', koperasi:'Koperasi', hotel:'Hotel', wisata:'Wisata'
+            finance:'Finance', koperasi:'Koperasi', hotel:'Hotel', wisata:'Wisata'
         };
 
         var st = (marker.status || 'NOT_VISIT').toUpperCase();
