@@ -2,33 +2,19 @@
 
 @section('content')
 
-<!-- ================= ACTION BAR (FIX DI ATAS) ================= -->
+<!-- ================= ACTION BAR ================= -->
 <div class="action-bar">
 
-
-    <button onclick="smartSalesMode()">Smart Sales</button>
     <button onclick="focusFollowUp()">FollowUp Today</button>
     <button onclick="resetMap()">Reset Map</button>
 
-    <div style="position:relative;display:inline-block;">
-        <input type="text" id="searchInput" placeholder="Cari nama lokasi..." autocomplete="off">
-        <div id="suggestions" style="
-            display:none;
-            position:absolute;
-            top:100%;
-            left:0;
-            right:0;
-            background:#fff;
-            border:1px solid #dee2e6;
-            border-radius:0 0 8px 8px;
-            box-shadow:0 4px 12px rgba(0,0,0,.15);
-            z-index:9999;
-            max-height:220px;
-            overflow-y:auto;
-            min-width:280px;
-        "></div>
+    <div class="search-group">
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" placeholder="Cari nama lokasi..." autocomplete="off">
+            <div id="suggestions" class="suggestion-box"></div>
+        </div>
+        <button onclick="searchLocation()">Cari</button>
     </div>
-    <button onclick="searchLocation()">Cari</button>
 
 </div>
 
@@ -40,10 +26,7 @@
     <div class="map-panel">
 
         <!-- Counter realtime -->
-        <div id="markerCounter" style="
-            background:#f8f9fa;border-radius:8px;padding:8px 12px;
-            text-align:center;font-size:13px;color:#495057;margin-bottom:4px;
-            border:1px solid #dee2e6;">
+        <div id="markerCounter" class="marker-counter">
             Menampilkan <strong id="counterNum">0</strong> lokasi
         </div>
 
@@ -89,7 +72,7 @@
         </div>
 
         <!-- Filter Kategori -->
-        <label style="font-size:11px;color:#6c757d;margin-bottom:2px;">Kategori</label>
+         <label class="filter-label">Kategori</label>
         <select id="filter">
             <option value="all">Semua Kategori</option>
             <option value="edu">Education</option>
@@ -103,36 +86,37 @@
         </select>
 
         <!-- Filter Status -->
-        <label style="font-size:11px;color:#6c757d;margin-top:8px;margin-bottom:2px;">Status</label>
-        <div id="statusFilter" style="display:flex;flex-direction:column;gap:4px;">
+        <label class="filter-label mt-8">Status</label>
 
-            <label class="status-filter-item" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 8px;border-radius:6px;border:1px solid #dee2e6;font-size:13px;">
+        <div id="statusFilter" class="status-filter">
+
+            <label class="status-filter-item">
                 <input type="checkbox" value="WIN" checked onchange="applyFilters()">
-                <span style="width:10px;height:10px;border-radius:50%;background:#28a745;display:inline-block;"></span>
+                <span class="dot dot-win"></span>
                 WIN
             </label>
 
-            <label class="status-filter-item" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 8px;border-radius:6px;border:1px solid #dee2e6;font-size:13px;">
+            <label class="status-filter-item">
                 <input type="checkbox" value="LOSE" checked onchange="applyFilters()">
-                <span style="width:10px;height:10px;border-radius:50%;background:#dc3545;display:inline-block;"></span>
+                <span class="dot dot-lose"></span>
                 LOSE
             </label>
 
-            <label class="status-filter-item" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 8px;border-radius:6px;border:1px solid #dee2e6;font-size:13px;">
+            <label class="status-filter-item">
                 <input type="checkbox" value="NOT_VISIT" checked onchange="applyFilters()">
-                <span style="width:10px;height:10px;border-radius:50%;background:#adb5bd;display:inline-block;"></span>
+                <span class="dot dot-notvisit"></span>
                 NOT VISIT
             </label>
 
-            <label class="status-filter-item" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 8px;border-radius:6px;border:1px solid #dee2e6;font-size:13px;">
+            <label class="status-filter-item">
                 <input type="checkbox" value="UNKNOWN" checked onchange="applyFilters()">
-                <span style="width:10px;height:10px;border-radius:50%;background:#ffc107;display:inline-block;"></span>
+                <span class="dot dot-unknown"></span>
                 UNKNOWN
             </label>
 
         </div>
 
-        <label style="margin-top:8px;">
+        <label class="followup-toggle">
             <input type="checkbox" id="toggleFollowUp" checked>
             Follow Up
         </label>
@@ -159,7 +143,6 @@ var routePoints = [];
 var routeLine = null;
 var userMarker = null;
 var routeMarkers = [];
-var smartRouteLine = null;
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     attribution:'&copy; OpenStreetMap'
@@ -181,29 +164,25 @@ function getCustomIcon(type, status, isFollowUpToday = false) {
     if (type === "hotel") iconClass = "fa-bed";
     if (type === "wisata") iconClass = "fa-umbrella-beach";
 
-    let color = "#6c757d";
+    let statusClass = "status-default";
 
     if (status) {
-
         status = status.toLowerCase();
 
-        if (status === "win") color = "#28a745";
-        if (status === "lose") color = "#dc3545";
-        if (status === "unknown") color = "#ffd61e";
-        if (status === "not_visit") color = "#adb5bd";
-
+        if (status === "win") statusClass = "status-win";
+        if (status === "lose") statusClass = "status-lose";
+        if (status === "unknown") statusClass = "status-unknown";
+        if (status === "not_visit") statusClass = "status-notvisit";
     }
 
     if (isFollowUpToday) {
-        color = "#ff0000";
+        statusClass = "status-followup";
     }
 
     return L.divIcon({
         html: `
-        <div class="custom-marker ${isFollowUpToday ? 'follow-up' : ''}" 
-             style="border-color:${color}">
-            <i class="fa-solid ${iconClass}" 
-               style="color:${color}"></i>
+        <div class="custom-marker ${statusClass}">
+            <i class="fa-solid ${iconClass}"></i>
         </div>
         `,
         className: '',
@@ -212,7 +191,6 @@ function getCustomIcon(type, status, isFollowUpToday = false) {
     });
 
 }
-
 
 // ================= STATUS BADGE =================
 
@@ -292,12 +270,12 @@ function generatePopup(item, type) {
                style="display:inline-block;margin-top:8px;padding:6px 14px;
                       background:#ed1c24;color:#fff;border-radius:6px;
                       font-size:12px;font-weight:bold;text-decoration:none;">
-               🔑 Login untuk Edit
+               Login untuk Edit
             </a>`;
 
     var navBtn = `
         <a href="https://www.google.com/maps?q=${item.lat},${item.lng}"
-           target="_blank" class="btn-nav">🧭 Navigate</a>`;
+           target="_blank" class="btn-nav">Navigate</a>`;
 
     if (type === 'edu') {
         return `
@@ -680,8 +658,6 @@ document.addEventListener("click", function(e){
 
 });
 
-
-
 // ================= FOLLOWUP TOGGLE =================
 
 document.getElementById("toggleFollowUp").addEventListener("change",function(){
@@ -763,115 +739,15 @@ async function drawOSRMRoute(startLatLng, selectedMarkers, lineVarName, color, l
     }
 }
 
+// TOAST
 function showRoutingToast(msg) {
     var t = document.createElement('div');
     t.innerText = msg;
-    t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);'
-        + 'background:#0d6efd;color:#fff;padding:10px 22px;border-radius:8px;'
-        + 'font-weight:bold;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.2);';
+    t.className = 'routing-toast';
+
     document.body.appendChild(t);
+
     return t;
-}
-
-
-// ================= SMART SALES =================
-
-function smartSalesMode(){
-
-    if(!navigator.geolocation){
-        alert('Browser tidak mendukung GPS');
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(async function(position){
-
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        var userLocation = L.latLng(lat, lng);
-
-        if(userMarker) map.removeLayer(userMarker);
-
-        userMarker = L.marker([lat, lng])
-            .addTo(map)
-            .bindPopup('📍 Lokasi Kamu')
-            .openPopup();
-
-        map.setView([lat, lng], 14);
-
-        var targets = [];
-
-        // PRIORITAS 1: Follow Up Hari Ini
-        allMarkers.forEach(function(marker){
-            if(marker.followUp && isToday(marker.followUp)){
-                targets.push({
-                    marker: marker,
-                    distance: userLocation.distanceTo(marker.getLatLng()),
-                    priority: 1
-                });
-            }
-        });
-
-        // PRIORITAS 2: LOSE
-        if(targets.length === 0){
-            allMarkers.forEach(function(marker){
-                if(marker.status === 'LOSE'){
-                    targets.push({
-                        marker: marker,
-                        distance: userLocation.distanceTo(marker.getLatLng()),
-                        priority: 2
-                    });
-                }
-            });
-        }
-
-        // PRIORITAS 3: NOT VISIT
-        if(targets.length === 0){
-            allMarkers.forEach(function(marker){
-                if(marker.status === 'NOT_VISIT'){
-                    targets.push({
-                        marker: marker,
-                        distance: userLocation.distanceTo(marker.getLatLng()),
-                        priority: 3
-                    });
-                }
-            });
-        }
-
-        if(targets.length === 0){
-            alert('Tidak ada target yang tersedia');
-            return;
-        }
-
-        targets.sort(function(a,b){ return a.distance - b.distance; });
-        var selected = targets.slice(0, 5);
-        var selectedMarkers = selected.map(function(t){ return t.marker; });
-
-        // sembunyikan SEMUA marker yang bukan target
-        allMarkers.forEach(function(m){ map.removeLayer(m); });
-
-        // tampilkan hanya target + naikkan z-index supaya menonjol
-        selectedMarkers.forEach(function(m, i){
-            m.addTo(map);
-            m.setZIndexOffset(2000 + (5 - i) * 100); // stop pertama paling atas
-        });
-
-        // auto fit bounds pas ke titik-titik target
-        var group = L.featureGroup(selectedMarkers);
-        map.fitBounds(group.getBounds(), { padding: [60, 60] });
-
-        updateCounter(selected.length);
-
-        var priorityLabel = selected[0].priority === 1
-            ? '🔔 Smart Sales (Follow Up)'
-            : selected[0].priority === 2
-                ? '🔴 Smart Sales (LOSE)'
-                : '⚪ Smart Sales (NOT VISIT)';
-
-        await drawOSRMRoute(userLocation, selected, 'routeLine', '#0d6efd', priorityLabel);
-
-    }, function(){
-        alert('Tidak bisa akses GPS');
-    });
 }
 
 
@@ -1074,76 +950,48 @@ function showFollowUpNotification() {
 
     if(todayFollowUps.length === 0) return;
 
-    // Buat panel notifikasi
     var panel = document.createElement('div');
     panel.id = 'followup-notif';
-    panel.style.cssText = `
-        position: fixed;
-        top: 80px;
-        right: 20px;
-        width: 300px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(0,0,0,.18);
-        z-index: 9999;
-        overflow: hidden;
-        animation: slideIn .3s ease;
-        font-family: sans-serif;
-    `;
+    panel.className = 'followup-panel';
 
     // Header
     var header = document.createElement('div');
-    header.style.cssText = `
-        background: #dc3545;
-        color: #fff;
-        padding: 12px 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    `;
+    header.className = 'followup-header';
     header.innerHTML = `
-        <span style="font-weight:bold;font-size:14px;">
+        <span class="followup-title">
             🔔 Follow Up Hari Ini (${todayFollowUps.length})
         </span>
-        <span id="close-notif" style="cursor:pointer;font-size:18px;line-height:1;">✕</span>
+        <span id="close-notif" class="followup-close">✕</span>
     `;
 
-    // List item
+    // List
     var list = document.createElement('div');
-    list.style.cssText = 'max-height:220px;overflow-y:auto;';
+    list.className = 'followup-list';
 
-    todayFollowUps.forEach(function(marker, i){
+    todayFollowUps.forEach(function(marker){
+
         var item = document.createElement('div');
-        item.style.cssText = `
-            padding: 10px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            transition: background .15s;
-        `;
+        item.className = 'followup-item';
 
-        var typeLabel = {edu:'Education',sppg:'SPPG',kdmp:'KDMP',faskes:'Faskes',bank:'Bank',koperasi:'Koperasi',hotel:'Hotel',wisata:'Wisata'};
-        var statusColor = {WIN:'#28a745',LOSE:'#dc3545',NOT_VISIT:'#adb5bd',UNKNOWN:'#ffc107'};
+        var typeLabel = {
+            edu:'Education', sppg:'SPPG', kdmp:'KDMP', faskes:'Faskes',
+            bank:'Bank', koperasi:'Koperasi', hotel:'Hotel', wisata:'Wisata'
+        };
+
         var st = (marker.status || 'NOT_VISIT').toUpperCase();
 
         item.innerHTML = `
             <span>
-                <strong>${marker.nama}</strong><br>
-                <small style="color:#6c757d;">${typeLabel[marker.type] || marker.type}</small>
+                <strong>${marker.nama}</strong>
+                <small class="followup-type">
+                    ${typeLabel[marker.type] || marker.type}
+                </small>
             </span>
-            <span style="
-                font-size:11px;font-weight:bold;padding:2px 8px;border-radius:10px;
-                background:${statusColor[st]||'#adb5bd'};color:#fff;
-            ">${st.replace('_',' ')}</span>
+            <span class="badge ${getStatusClass(st)}">
+                ${st.replace('_',' ')}
+            </span>
         `;
 
-        item.addEventListener('mouseenter', function(){ this.style.background = '#f8f9fa'; });
-        item.addEventListener('mouseleave', function(){ this.style.background = '#fff'; });
-
-        // Klik item → zoom ke marker dan buka popup
         item.addEventListener('click', function(){
             map.setView(marker.getLatLng(), 16);
             marker.openPopup();
@@ -1153,14 +1001,13 @@ function showFollowUpNotification() {
         list.appendChild(item);
     });
 
-    // Footer — tombol langsung jalankan FollowUp Today
+    // Footer
     var footer = document.createElement('div');
-    footer.style.cssText = 'padding:10px 16px;background:#f8f9fa;';
+    footer.className = 'followup-footer';
     footer.innerHTML = `
-        <button id="btn-goto-followup" style="
-            width:100%;padding:8px;background:#dc3545;color:#fff;
-            border:none;border-radius:6px;cursor:pointer;font-weight:bold;font-size:13px;
-        ">📍 Tampilkan di Peta</button>
+        <button id="btn-goto-followup" class="followup-btn">
+            📍 Tampilkan di Peta
+        </button>
     `;
 
     panel.appendChild(header);
@@ -1168,26 +1015,14 @@ function showFollowUpNotification() {
     panel.appendChild(footer);
     document.body.appendChild(panel);
 
-    // Animasi CSS
-    var style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideIn {
-            from { opacity:0; transform: translateX(20px); }
-            to   { opacity:1; transform: translateX(0); }
-        }
-    `;
-    document.head.appendChild(style);
+    // Close
+    document.getElementById('close-notif').onclick = () => panel.remove();
 
-    // Tutup panel
-    document.getElementById('close-notif').addEventListener('click', function(){
-        panel.remove();
-    });
-
-    // Tombol tampilkan di peta → jalankan focusFollowUp
-    document.getElementById('btn-goto-followup').addEventListener('click', function(){
+    // Go to map
+    document.getElementById('btn-goto-followup').onclick = () => {
         panel.remove();
         focusFollowUp();
-    });
+    };
 }
 
 function openEditForm(id, sheet, status, visit, internet, hasilEncoded, followUpEncoded) {
@@ -1217,21 +1052,17 @@ function openEditForm(id, sheet, status, visit, internet, hasilEncoded, followUp
         <input type="text" id="edit_internet" value="${internet ?? ''}">
 
         <label>Hasil Kunjungan</label>
-        <textarea id="edit_hasil" rows="3" placeholder="Tulis hasil kunjungan..."
-            style="width:100%;padding:6px;border-radius:6px;border:1px solid #ccc;resize:vertical;font-size:13px;">${hasil}</textarea>
+        <textarea id="edit_hasil" rows="3" placeholder="Tulis hasil kunjungan...">${hasil}</textarea>
 
         <label>Follow Up Tanggal</label>
         <input type="date" id="edit_followup"
-            style="width:100%;padding:6px;border-radius:6px;border:1px solid #ccc;"
             value="${followUp ? toInputDate(followUp) : ''}">
 
-        <div style="display:flex;gap:8px;margin-top:12px;">
-            <button onclick="submitEdit(${id},'${sheet}')"
-                style="flex:1;background:#28a745;color:#fff;border:none;padding:8px;border-radius:6px;cursor:pointer;font-weight:bold;">
+        <div class="popup-actions">
+            <button onclick="submitEdit(${id},'${sheet}')" class="btn-save">
                 ✅ Simpan
             </button>
-            <button onclick="map.closePopup()"
-                style="flex:1;background:#6c757d;color:#fff;border:none;padding:8px;border-radius:6px;cursor:pointer;">
+            <button onclick="map.closePopup()" class="btn-cancel">
                 ✖ Batal
             </button>
         </div>
@@ -1310,14 +1141,15 @@ function submitEdit(id, sheet) {
 function showToast(msg) {
     var t = document.createElement("div");
     t.innerText = msg;
-    t.style.cssText = `
-        position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
-        background:#28a745;color:#fff;padding:10px 22px;border-radius:8px;
-        font-weight:bold;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.2);
-        transition:opacity .4s;
-    `;
+    t.className = "toast toast-success";
+
     document.body.appendChild(t);
-    setTimeout(() => { t.style.opacity = 0; setTimeout(() => t.remove(), 400); }, 2000);
+
+    // fade out
+    setTimeout(() => {
+        t.classList.add("hide");
+        setTimeout(() => t.remove(), 400);
+    }, 2000);
 }
 
 </script>
