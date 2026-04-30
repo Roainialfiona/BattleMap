@@ -18,8 +18,9 @@ body{
 
 .navbar{
     background:white;
-    padding:14px 25px;
+    padding:10px 25px;
     display:flex;
+    align-items:center;
     gap:30px;
     box-shadow:0 2px 8px rgba(0,0,0,0.05);
     border-bottom:2px solid #f1f3f6;
@@ -31,7 +32,7 @@ body{
     font-weight:600;
     color:#555;
     font-size:14px;
-    padding-bottom:6px;
+    padding-bottom:2px;
 }
 
 /* underline animation */
@@ -39,7 +40,7 @@ body{
     content:'';
     position:absolute;
     left:0;
-    bottom:0;
+    bottom:-2px;
     width:0%;
     height:2px;
     background:#e30613;
@@ -56,4 +57,70 @@ body{
 
 .navbar a.active::after{
     width:100%;
+}
+
+/* ================= NAV RIGHT ================= */
+
+.nav-right{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+/* user name */
+.nav-user{
+    font-size:13px;
+    color:#6c757d;
+}
+
+/* form reset */
+.nav-form{
+    margin:0;
+}
+
+/* logout button */
+.nav-logout-btn{
+    padding:6px 12px;
+    background:#f1f3f5;
+    color:#495057;
+    border:none;
+    border-radius:8px;
+    font-size:13px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.nav-logout-btn:hover{
+    background:#e9ecef;
+}
+
+.nav-login-btn{
+    padding:6px 16px;
+    background:#fff;
+    color:#e30613 !important;
+    border:1.5px solid #e30613;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    text-decoration:none;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding-bottom:6px !important; /* reset */
+    line-height:normal;
+
+    transition:0.2s;
+}
+
+/* hover */
+.nav-login-btn:hover{
+    background:#e30613;
+    color:#fff !important;
+}
+
+.nav-login-btn::after{
+    display:none !important;
 }
