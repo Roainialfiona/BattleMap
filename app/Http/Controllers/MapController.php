@@ -111,7 +111,7 @@ class MapController extends Controller
                 $hasilIndex             = array_search('hasil', $header);
                 $alamatIndex            = array_search('alamat', $header);
                 $followUpIndex          = array_search('follow up', $header);
-                $gmapsIndex             = array_search('link gmaps', $header);
+                $gmapsIndex             = array_search('gmaps', $header);
                 $tglPsIndex             = array_search('tanggal ps', $header);
 
                 if ($namaIndex === false || $latIndex === false || $lngIndex === false) {
