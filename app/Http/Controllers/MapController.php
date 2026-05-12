@@ -111,6 +111,7 @@ class MapController extends Controller
                 $hasilIndex             = array_search('hasil', $header);
                 $alamatIndex            = array_search('alamat', $header);
                 $followUpIndex          = array_search('follow up', $header);
+                $gmapsIndex             = array_search('link gmaps', $header);
                 $tglPsIndex             = array_search('tanggal ps', $header);
 
                 if ($namaIndex === false || $latIndex === false || $lngIndex === false) {
@@ -144,7 +145,8 @@ class MapController extends Controller
                         'hasil' => $row[$hasilIndex] ?? '-',
                         'alamat' => $row[$alamatIndex] ?? '-',
                         'follow_up'   => $row[$followUpIndex] ?? '-',
-                        'tanggal_ps'  => $tglPsIndex !== false ? ($row[$tglPsIndex] ?? '') : ''
+                        'tanggal_ps'  => $tglPsIndex !== false ? ($row[$tglPsIndex] ?? '') : '',
+                        'link_gmaps'     => $gmapsIndex !== false ? ($row[$gmapsIndex] ?? '') : ''
                     ];
 
                     switch($sheetName){
