@@ -247,11 +247,23 @@ function isToday(dateStr){
 }
 
 
+// ================= NAVIGATE BUTTON =================
+// Kalau item punya link_gmaps dari sheet → pakai itu
+// Kalau kosong → fallback ke koordinat lat/lng
+
+function getNavBtn(item) {
+    var url = (item.link_gmaps && item.link_gmaps.trim() !== '')
+        ? item.link_gmaps
+        : `https://www.google.com/maps?q=${item.lat},${item.lng}`;
+
+    return `<a href="${url}" target="_blank" class="btn-nav">Navigate</a>`;
+}
+
+
 // ================= POPUP =================
 
 function generatePopup(item, type) {
 
-    // encode di sini, SEBELUM masuk ke HTML string
     var hasilEnc   = encodeURIComponent(item.hasil    ?? '');
     var followEnc  = encodeURIComponent(item.follow_up ?? '');
     var internetVal = (item.nomor_internet ?? '').replace(/'/g, "\\'");
@@ -273,9 +285,8 @@ function generatePopup(item, type) {
                Login untuk Edit
             </a>`;
 
-    var navBtn = `
-        <a href="https://www.google.com/maps?q=${item.lat},${item.lng}"
-           target="_blank" class="btn-nav">Navigate</a>`;
+    // ← pakai getNavBtn(item) di semua popup
+    var navBtn = getNavBtn(item);
 
     if (type === 'edu') {
         return `
@@ -408,7 +419,6 @@ function generatePopup(item, type) {
             </div>`;
     }
 
-
 }
 
 
@@ -435,7 +445,6 @@ data.forEach(function(item){
     .bindPopup(generatePopup(item,type))
     .addTo(targetMap);
 
-    // simpan info marker
     marker.type    = type;
     marker.nama    = item.nama.toLowerCase();
     marker.status  = item.status;
@@ -455,7 +464,7 @@ data.forEach(function(item){
             fill:false
         }).addTo(followUpLayer);
 
-        circle.type = type; // simpan kategori
+        circle.type = type;
     }
 
 });
@@ -474,7 +483,6 @@ var koperasi=@json($koperasi ?? []);
 var hotel=@json($hotel ?? []);
 var wisata=@json($wisata ?? []);
 
-// Auth state — dipakai untuk tampilkan/sembunyikan tombol Edit
 var isLoggedIn = {{ session('auth_user') ? 'true' : 'false' }};
 
 addMarkers(education,'edu',map);
@@ -502,7 +510,7 @@ function applyFilters() {
     var activeStatuses   = getActiveStatuses();
 
     var visible = 0;
-    var visibleMarkerLatLngs = []; // ← tambah ini
+    var visibleMarkerLatLngs = [];
 
     allMarkers.forEach(function(marker) {
         var matchKategori = (selectedKategori === 'all' || marker.type === selectedKategori);
@@ -512,17 +520,16 @@ function applyFilters() {
         if (matchKategori && matchStatus) {
             marker.addTo(map);
             visible++;
-            visibleMarkerLatLngs.push(marker.getLatLng().toString()); // ← tambah ini
+            visibleMarkerLatLngs.push(marker.getLatLng().toString());
         } else {
             map.removeLayer(marker);
         }
     });
 
-    // followup circles ikut filter kategori DAN hanya tampil kalau markernya visible
     followUpLayer.eachLayer(function(layer) {
         var matchKategori = (selectedKategori === 'all' || layer.type === selectedKategori);
         var latLngStr = layer.getLatLng().toString();
-        var markerVisible = visibleMarkerLatLngs.includes(latLngStr); // ← cek ini
+        var markerVisible = visibleMarkerLatLngs.includes(latLngStr);
 
         if (matchKategori && markerVisible) {
             layer.addTo(map);
@@ -534,12 +541,10 @@ function applyFilters() {
     updateCounter(visible);
 }
 
-// filter kategori trigger applyFilters
 document.getElementById('filter').addEventListener('change', function() {
     applyFilters();
 });
 
-// inisialisasi counter setelah marker dimuat
 setTimeout(function() {
     updateCounter(allMarkers.length);
 }, 100);
@@ -601,9 +606,7 @@ searchInput.addEventListener("input", function(){
     }
 
     var matches = allMarkers.filter(function(marker){
-
         return marker.nama.includes(keyword);
-
     });
 
     if(matches.length === 0){
@@ -615,7 +618,6 @@ searchInput.addEventListener("input", function(){
 
         var div = document.createElement("div");
 
-        // warna badge per tipe
         var typeColor = {edu:'#0d6efd',sppg:'#fd7e14',kdmp:'#6f42c1',faskes:'#20c997'};
         var statusColor = {WIN:'#28a745',LOSE:'#dc3545',NOT_VISIT:'#adb5bd',UNKNOWN:'#ffc107'};
         var st = (marker.status || 'NOT_VISIT').toUpperCase();
@@ -651,23 +653,19 @@ searchInput.addEventListener("input", function(){
 });
 
 document.addEventListener("click", function(e){
-
     if(!searchInput.contains(e.target)){
         suggestionBox.style.display = "none";
     }
-
 });
 
 // ================= FOLLOWUP TOGGLE =================
 
 document.getElementById("toggleFollowUp").addEventListener("change",function(){
-
     if(this.checked){
         map.addLayer(followUpLayer);
         }else{
         map.removeLayer(followUpLayer);
         }
-
     });
 
 
@@ -719,7 +717,6 @@ async function drawOSRMRoute(startLatLng, selectedMarkers, lineVarName, color, l
             opacity: 0.85,
         }).addTo(map);
 
-        // fit bounds ke waypoint target (bukan seluruh rute), supaya marker tetap fokus
         var waypointBounds = L.latLngBounds(waypoints);
         map.fitBounds(waypointBounds, { padding:[60,60] });
 
@@ -739,14 +736,11 @@ async function drawOSRMRoute(startLatLng, selectedMarkers, lineVarName, color, l
     }
 }
 
-// TOAST
 function showRoutingToast(msg) {
     var t = document.createElement('div');
     t.innerText = msg;
     t.className = 'routing-toast';
-
     document.body.appendChild(t);
-
     return t;
 }
 
@@ -757,19 +751,13 @@ function focusFollowUp(){
     var visibleMarkers = [];
 
     allMarkers.forEach(function(marker){
-
         if(marker.followUp && isToday(marker.followUp)){
-
             marker.addTo(map);
             marker.setZIndexOffset(2000);
             visibleMarkers.push(marker);
-
         }else{
-
             map.removeLayer(marker);
-
         }
-
     });
 
     updateCounter(visibleMarkers.length);
@@ -786,7 +774,6 @@ function focusFollowUp(){
 // ================= RESET MAP =================
 function resetMap(){
 
-
     if(userMarker){
         map.removeLayer(userMarker);
         userMarker = null;
@@ -799,14 +786,12 @@ function resetMap(){
 
     routeMarkers = [];
 
-    // bersihkan marker dulu
     allMarkers.forEach(function(marker){
         if(map.hasLayer(marker)){
             map.removeLayer(marker);
         }
     });
 
-    // tampilkan semua marker lagi
     allMarkers.forEach(function(marker){
         marker.addTo(map);
         marker.setZIndexOffset(0);
@@ -814,7 +799,6 @@ function resetMap(){
 
     document.getElementById("filter").value = "all";
 
-    // reset semua checkbox status
     document.querySelectorAll('#statusFilter input[type=checkbox]').forEach(function(cb) {
         cb.checked = true;
     });
@@ -846,98 +830,50 @@ function autoHighlightTargets(){
 
         var targets = [];
 
-        // PRIORITAS FOLLOW UP TODAY
         allMarkers.forEach(function(marker){
-
             if(marker.followUp && isToday(marker.followUp)){
-
-                var distance = userLocation.distanceTo(marker.getLatLng());
-
-                targets.push({
-                    marker:marker,
-                    distance:distance
-                });
-
+                targets.push({ marker:marker, distance:userLocation.distanceTo(marker.getLatLng()) });
             }
-
         });
 
-        // PRIORITAS LOSE
         if(targets.length === 0){
-
             allMarkers.forEach(function(marker){
-
                 if(marker.status === "LOSE"){
-
-                    var distance = userLocation.distanceTo(marker.getLatLng());
-
-                    targets.push({
-                        marker:marker,
-                        distance:distance
-                    });
-
+                    targets.push({ marker:marker, distance:userLocation.distanceTo(marker.getLatLng()) });
                 }
-
             });
-
         }
 
-        // PRIORITAS NOT VISIT
         if(targets.length === 0){
-
             allMarkers.forEach(function(marker){
-
                 if(marker.status === "NOT_VISIT"){
-
-                    var distance = userLocation.distanceTo(marker.getLatLng());
-
-                    targets.push({
-                        marker:marker,
-                        distance:distance
-                    });
-
+                    targets.push({ marker:marker, distance:userLocation.distanceTo(marker.getLatLng()) });
                 }
-
             });
-
         }
 
-        if(targets.length === 0){
-            return;
-        }
+        if(targets.length === 0) return;
 
-        targets.sort(function(a,b){
-            return a.distance - b.distance;
-        });
+        targets.sort(function(a,b){ return a.distance - b.distance; });
 
         var selected = targets.slice(0,5);
 
         selected.forEach(function(item){
-
             item.marker.setZIndexOffset(2000);
             item.marker.openPopup();
-
         });
 
-        // ZOOM KE TARGET TERPILIH
-        var group = selected.map(function(t){
-            return t.marker;
-        });
-
-        map.fitBounds(L.featureGroup(group).getBounds());
+        map.fitBounds(L.featureGroup(selected.map(t => t.marker)).getBounds());
 
     });
 
 }
+
 map.whenReady(function(){
-
     setTimeout(function(){
-
         autoHighlightTargets();
         showFollowUpNotification();
-
     },1000);
-
 });
 
 // ================= FOLLOW UP NOTIFICATION =================
@@ -954,7 +890,6 @@ function showFollowUpNotification() {
     panel.id = 'followup-notif';
     panel.className = 'followup-panel';
 
-    // Header
     var header = document.createElement('div');
     header.className = 'followup-header';
     header.innerHTML = `
@@ -964,7 +899,6 @@ function showFollowUpNotification() {
         <span id="close-notif" class="followup-close">✕</span>
     `;
 
-    // List
     var list = document.createElement('div');
     list.className = 'followup-list';
 
@@ -1001,7 +935,6 @@ function showFollowUpNotification() {
         list.appendChild(item);
     });
 
-    // Footer
     var footer = document.createElement('div');
     footer.className = 'followup-footer';
     footer.innerHTML = `
@@ -1015,10 +948,7 @@ function showFollowUpNotification() {
     panel.appendChild(footer);
     document.body.appendChild(panel);
 
-    // Close
     document.getElementById('close-notif').onclick = () => panel.remove();
-
-    // Go to map
     document.getElementById('btn-goto-followup').onclick = () => {
         panel.remove();
         focusFollowUp();
@@ -1076,15 +1006,13 @@ function openEditForm(id, sheet, status, visit, internet, hasilEncoded, followUp
         .openOn(map);
 }
 
-// helper: konversi DD/MM/YYYY → YYYY-MM-DD untuk input[type=date]
 function toInputDate(str) {
     if (!str) return '';
     var parts = str.split('/');
     if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
-    return str; // kalau sudah format ISO, langsung return
+    return str;
 }
 
-// helper: konversi YYYY-MM-DD → DD/MM/YYYY untuk simpan ke sheet
 function toSheetDate(str) {
     if (!str) return '';
     var parts = str.split('-');
@@ -1119,7 +1047,6 @@ function submitEdit(id, sheet) {
     .then(data => {
         if (data.success !== false) {
             map.closePopup();
-            // update marker di memori supaya tidak perlu full reload
             allMarkers.forEach(function(marker) {
                 if (marker.itemId === id) {
                     marker.status   = status;
@@ -1137,15 +1064,11 @@ function submitEdit(id, sheet) {
     });
 }
 
-// toast notifikasi kecil
 function showToast(msg) {
     var t = document.createElement("div");
     t.innerText = msg;
     t.className = "toast toast-success";
-
     document.body.appendChild(t);
-
-    // fade out
     setTimeout(() => {
         t.classList.add("hide");
         setTimeout(() => t.remove(), 400);
